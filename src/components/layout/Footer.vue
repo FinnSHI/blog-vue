@@ -6,6 +6,9 @@
         {{ new Date().getFullYear() }} By
         {{ blogInfo.websiteConfig.websiteAuthor }}
       </div>
+      <div>
+        一起学习，一起进步
+      </div>
       <a href="https://beian.miit.gov.cn/" target="_blank">
         {{ blogInfo.websiteConfig.websiteRecordNo }}
       </a>

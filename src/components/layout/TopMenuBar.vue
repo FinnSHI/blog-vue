@@ -7,12 +7,12 @@
           方人也几点
         </router-link>
       </div>
-<!--      <div style="margin-left:auto">-->
-<!--        <a @click="openSearch"><i class="iconfont iconsousuo"/></a>-->
-<!--        <a @click="openDrawer" style="margin-left:10px;font-size:20px">-->
-<!--          <i class="iconfont iconhanbao" />-->
-<!--        </a>-->
-<!--      </div>-->
+      <div style="margin-left:auto">
+        <a @click="openSearch"><i class="iconfont iconsousuo"/></a>
+        <a @click="openDrawer" style="margin-left:10px;font-size:20px">
+          <i class="iconfont iconhanbao" />
+        </a>
+      </div>
     </div>
     <!-- 电脑导航栏 -->
     <div class="d-md-block d-none nav-container">
@@ -23,24 +23,60 @@
       </div>
       <div class="float-right nav-title">
         <div class="menus-item">
-          <router-link to="/">
+          <a class="menu-btn" @click="openSearch">
+            <i class="iconfont iconsousuo" /> 搜索
+          </a>
+        </div>
+        <div class="menus-item">
+          <router-link class="menu-btn" to="/">
             <i class="iconfont iconzhuye" /> 首页
           </router-link>
         </div>
         <div class="menus-item">
-          <router-link to="/archives">
-            <i class="iconfont iconguidang" /> 归档
+          <router-link class="menu-btn" to="/">
+            <i class="iconfont iconzhuye" /> 文章
           </router-link>
         </div>
         <div class="menus-item">
-          <router-link to="/categories">
-            <i class="iconfont iconfenlei" /> 分类
-          </router-link>
+          <a class="menu-btn">
+            <i class="iconfont iconfaxian" /> 发现
+            <i class="iconfont iconxiangxia2 expand" />
+          </a>
+          <ul class="menus-submenu">
+<!--            <li>-->
+<!--              <router-link to="/archives">-->
+<!--                <i class="iconfont iconguidang" /> 归档-->
+<!--              </router-link>-->
+<!--            </li>-->
+            <li>
+              <router-link to="/categories">
+                <i class="iconfont iconfenlei" /> 文章分类
+              </router-link>
+            </li>
+            <li>
+              <router-link to="/tags">
+                <i class="iconfont iconbiaoqian" /> 文章标签
+              </router-link>
+            </li>
+          </ul>
         </div>
         <div class="menus-item">
-          <router-link to="/tags">
-            <i class="iconfont iconbiaoqian" /> 标签
-          </router-link>
+          <a class="menu-btn">
+            <i class="iconfont iconqita" /> 娱乐
+            <i class="iconfont iconxiangxia2 expand" />
+          </a>
+          <ul class="menus-submenu">
+            <li>
+              <router-link to="/albums">
+                <i class="iconfont iconxiangce1" /> 相册
+              </router-link>
+            </li>
+            <li>
+              <router-link to="/talks">
+                <i class="iconfont iconpinglun" /> 说说
+              </router-link>
+            </li>
+          </ul>
         </div>
         <div class="menus-item">
           <router-link to="/links">
@@ -52,34 +88,34 @@
             <i class="iconfont iconzhifeiji" /> 关于
           </router-link>
         </div>
-        <div class="menus-item">
-          <router-link to="/message">
-            <i class="iconfont iconpinglunzu" /> 留言
-          </router-link>
-        </div>
-<!--        <div class="user-btn">-->
-<!--          <a v-if="!this.$store.state.avatar" @click="openLogin">-->
-<!--            <i class="iconfont icondenglu" /> 登录-->
-<!--          </a>-->
-<!--          <template v-else>-->
-<!--            <img-->
-<!--              class="user-avatar"-->
-<!--              :src="this.$store.state.avatar"-->
-<!--              height="30"-->
-<!--              width="30"-->
-<!--            />-->
-<!--            <ul class="user-submenu">-->
-<!--              <li>-->
-<!--                <router-link to="/user">-->
-<!--                  <i class="iconfont icongerenzhongxin" /> 个人中心-->
-<!--                </router-link>-->
-<!--              </li>-->
-<!--              <li>-->
-<!--                <a @click="logout"><i class="iconfont icontuichu" /> 退出</a>-->
-<!--              </li>-->
-<!--            </ul>-->
-<!--          </template>-->
+<!--        <div class="menus-item">-->
+<!--          <router-link to="/message">-->
+<!--            <i class="iconfont iconpinglunzu" /> 留言-->
+<!--          </router-link>-->
 <!--        </div>-->
+        <div class="user-btn">
+          <a v-if="!this.$store.state.avatar" @click="openLogin">
+            <i class="iconfont icondenglu" /> 登录
+          </a>
+          <template v-else>
+            <img
+              class="user-avatar"
+              :src="this.$store.state.avatar"
+              height="30"
+              width="30"
+            />
+            <ul class="user-submenu">
+              <li>
+                <router-link to="/user">
+                  <i class="iconfont icongerenzhongxin" /> 个人中心
+                </router-link>
+              </li>
+              <li>
+                <a @click="logout"><i class="iconfont icontuichu" /> 退出</a>
+              </li>
+            </ul>
+          </template>
+        </div>
       </div>
     </div>
   </v-app-bar>
@@ -109,6 +145,37 @@ export default {
       } else {
         that.navClass = "nav";
       }
+    },
+    openSearch() {
+      this.$store.state.searchFlag = true;
+    },
+    openDrawer() {
+      this.$store.state.drawer = true;
+    },
+    openLogin() {
+      this.$store.state.loginFlag = true;
+    },
+    logout() {
+      //如果在个人中心则跳回上一页
+      if (this.$route.path == "/user") {
+        this.$router.go(-1);
+      }
+      this.axios.get("/api/logout").then(({ data }) => {
+        if (data.flag) {
+          this.$store.commit("logout");
+          this.$toast({ type: "success", message: "注销成功" });
+        } else {
+          this.$toast({ type: "error", message: data.message });
+        }
+      });
+    }
+  },
+  computed: {
+    avatar() {
+      return this.$store.state.avatar;
+    },
+    blogInfo() {
+      return this.$store.state.blogInfo;
     }
   }
 }
@@ -127,7 +194,7 @@ ul {
 .nav a {
   color: #eee !important;
 }
-.nav .menus-item a {
+.nav .menu-btn {
   text-shadow: 0.05rem 0.05rem 0.1rem rgba(0, 0, 0, 0.3);
 }
 .nav .blog-title a {
@@ -147,7 +214,6 @@ ul {
   color: #4c4948 !important;
 }
 .nav-fixed .menus-item a,
-.nav-fixed .menus-btn a,
 .nav-fixed .blog-title a {
   text-shadow: none;
 }
@@ -171,22 +237,18 @@ ul {
   font-size: 18px;
   font-weight: bold;
 }
-.user-btn,
-.menus-btn,
 .menus-item {
   position: relative;
   display: inline-block;
   margin: 0 0 0 0.875rem;
 }
-.menus-btn a,
 .menus-item a {
   transition: all 0.2s;
 }
-.nav-fixed .menus-btn a:hover,
-.nav-fixed .menus-item a:hover {
+.nav-fixed .menu-btn:hover {
   color: #49b1f5 !important;
 }
-.menus-item a:hover:after {
+.menu-btn:hover:after {
   width: 100%;
 }
 .menus-item a:after {
@@ -200,17 +262,14 @@ ul {
   content: "";
   transition: all 0.3s ease-in-out;
 }
-.user-btn a {
-  transition: all 0.2s;
-}
 .user-avatar {
   cursor: pointer;
   border-radius: 50%;
 }
-.user-btn:hover .user-submenu {
+.menus-item:hover .menus-submenu {
   display: block;
 }
-.user-submenu {
+.menus-submenu {
   position: absolute;
   display: none;
   right: 0;
@@ -220,7 +279,7 @@ ul {
   background-color: #fff;
   animation: submenu 0.3s 0.1s ease both;
 }
-.user-submenu:before {
+.menus-submenu:before {
   position: absolute;
   top: -8px;
   left: 0;
@@ -228,14 +287,14 @@ ul {
   height: 20px;
   content: "";
 }
-.user-submenu a {
+.menus-submenu a {
   line-height: 2;
   color: #4c4948 !important;
   text-shadow: none;
   display: block;
   padding: 6px 14px;
 }
-.user-submenu a:hover {
+.menus-submenu a:hover {
   background: #4ab1f4;
 }
 @keyframes submenu {
@@ -251,3 +310,4 @@ ul {
   }
 }
 </style>
+

@@ -2,48 +2,10 @@
   <v-app id="app">
     <!-- 导航栏 -->
     <TopMenuBar />
+    <!-- 侧边栏 -->
     <SideNavBar></SideNavBar>
+    <!-- 页脚 -->
     <Footer></Footer>
-    <!-- <v-app-bar
-      app
-      color="primary"
-      dark
-    >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
-
-      <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
-    </v-app-bar>
-
-    <v-main>
-      <HelloWorld/>
-    </v-main> -->
   </v-app>
 </template>
 
@@ -55,13 +17,35 @@ import Footer from "@/components/layout/Footer";
 
 export default {
   name: 'App',
-
+  created() {
+    // 获取博客信息
+    this.getBlogInfo();
+    // // 上传访客信息
+    // this.axios.post("/api/report");
+  },
   components: {
     TopMenuBar,
     SideNavBar,
     Footer
   },
-
+  methods: {
+    getBlogInfo() {
+      this.axios.get("/api").then(({ data }) => {
+        this.$store.commit("checkBlogInfo", data.data.blogInfo);
+      });
+    }
+  },
+  computed: {
+    blogInfo() {
+      return this.$store.state.blogInfo;
+    },
+    isMobile() {
+      const flag = navigator.userAgent.match(
+          /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+      );
+      return flag;
+    }
+  },
   data: () => ({
     //
   }),

@@ -1,14 +1,14 @@
 import Vue from "vue";
 import Router from "vue-router";
-
+import Home from '../views/home/Home'
 
 
 Vue.use(Router);
 
 const routes = [
   {
-    path: "/api/home",
-    component: resolve => require(["../views/home/Home.vue"], resolve)
+    path: "/home",
+    component: Home
   }
 ];
 

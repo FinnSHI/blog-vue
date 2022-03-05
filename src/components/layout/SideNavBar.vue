@@ -10,7 +10,7 @@
     <!-- 博主介绍 -->
     <div class="blogger-info">
       <v-avatar size="110" style="margin-bottom:0.5rem">
-        <img :src="this.$store.state.blogInfo.websiteConfig.websiteAvatar" />
+        <img :src="this.$store.state.blogInfo.websiteAvatar" />
       </v-avatar>
     </div>
     <!-- 博客信息 -->
@@ -41,7 +41,7 @@
       </div>
     </div>
     <hr />
-    <!-- 页面导航 -->
+<!--     页面导航 -->
     <div class="menu-container">
       <div class="menus-item">
         <router-link to="/">
