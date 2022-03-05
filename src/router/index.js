@@ -1,18 +1,18 @@
 import Vue from "vue";
-import Router from "vue-router";
-import Home from '../views/home/Home'
+import VueRouter from "vue-router";
+import Home from '../views/home/OldHome'
 
 
-Vue.use(Router);
+Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/home",
+    path: "/",
     component: Home
   }
 ];
 
-const router = new Router({
+const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes

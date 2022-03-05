@@ -26,7 +26,7 @@ export default {
   components: {
     TopMenuBar,
     SideNavBar,
-    Footer
+    Footer,
   },
   methods: {
     getBlogInfo() {
