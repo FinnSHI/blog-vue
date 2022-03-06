@@ -14,7 +14,7 @@ module.exports = defineConfig({
         }
       }
     },
-    disableHostCheck: true
+    // disableHostCheck: true
   },
   productionSourceMap: false,
   css: {

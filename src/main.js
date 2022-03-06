@@ -17,8 +17,27 @@ Vue.use(VueAxios, axios);
 
 axios.defaults.baseURL = 'http://localhost:8080';
 
+Vue.filter("date", function(value) {
+    return dayjs(value).format("YYYY-MM-DD");
+});
+
 Vue.filter("year", function(value) {
-  return dayjs(value).format("YYYY");
+    return dayjs(value).format("YYYY");
+});
+
+Vue.filter("hour", function(value) {
+    return dayjs(value).format("HH:mm:ss");
+});
+
+Vue.filter("time", function(value) {
+    return dayjs(value).format("YYYY-MM-DD HH:mm:ss");
+});
+
+Vue.filter("num", function(value) {
+    if (value >= 1000) {
+        return (value / 1000).toFixed(1) + "k";
+    }
+    return value;
 });
 
 /* 全局前端守卫 */

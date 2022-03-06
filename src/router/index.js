@@ -1,14 +1,23 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-// import Home from '../views/home/Home'
-
+import Home from "@/views/home/Home";
+import ArticlePage from "@/views/article/ArticlePage";
+import Article from "@/views/article/Article";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: '/',
-    component: () => import('@/views/home/Home'),
+    component: Home,
+  },
+  {
+    path: '/articles',
+    component: ArticlePage,
+  },
+  {
+    path: '/articles/:articleId',
+    component: Article,
   }
 ];
 

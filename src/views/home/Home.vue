@@ -106,17 +106,17 @@ export default {
 <style scoped>
 .home-banner {
   position: absolute;
-  top: -60px;
+  top: 0px;
   left: 0;
   right: 0;
-  height: 100vh;
+  height: 90vh;
   background-attachment: fixed;
   text-align: center;
   color: #fff !important;
   animation: header-effect 1s;
 }
 .banner-container {
-  margin-top: 43vh;
+  margin-top: 28vh;
   line-height: 1.5;
   color: #eee;
 }

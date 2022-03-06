@@ -33,7 +33,7 @@
           </router-link>
         </div>
         <div class="menus-item">
-          <router-link class="menu-btn" to="/">
+          <router-link class="menu-btn" to="/articles">
             <i class="iconfont icon-xieboke" /> 文章
           </router-link>
         </div>

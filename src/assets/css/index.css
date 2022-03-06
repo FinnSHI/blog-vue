@@ -148,10 +148,10 @@ p {
   .banner {
     position: absolute;
     background-color: #49b1f5;
-    top: -60px;
+    top: 0px;
     left: 0;
     right: 0;
-    height: 400px;
+    height: 500px;
     animation: header-effect 1s;
   }
   .banner-title {
