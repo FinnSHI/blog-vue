@@ -6,7 +6,7 @@
       <div class="banner-container">
         <!-- 联系方式 -->
         <h1 class="blog-title animated zoomIn">
-          {{ blogInfo.websiteConfig.websiteName }}
+            {{ blogInfo.websiteConfig.websiteName }}
         </h1>
         <!-- 打印 -->
         <div class="blog-intro">
@@ -50,9 +50,11 @@ export default {
   methods: {
     // 初始化
     init() {
+      // this.$store.commit("isHome", true);
+      // console.log(this.$store.state.isHome);
       document.title = this.blogInfo.websiteConfig.websiteName;
       // 一言Api进行打字机循环输出效果
-      fetch("https://v1.hitokoto.cn?c=i")
+      fetch("https://v1.hitokoto.cn?c=i&c=l")
           .then(res => {
             return res.json();
           })
@@ -70,11 +72,11 @@ export default {
     blogInfo() {
       return this.$store.state.blogInfo;
     },
-    isShowSocial() {
-      return function(social) {
-        return this.blogInfo.websiteConfig.socialUrlList.indexOf(social) != -1;
-      };
-    },
+    // isShowSocial() {
+    //   return function(social) {
+    //     return this.blogInfo.websiteConfig.socialUrlList.indexOf(social) != -1;
+    //   };
+    // },
     cover() {
       let cover = '';
       this.$store.state.blogInfo.pageList.forEach(item => {

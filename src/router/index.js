@@ -1,19 +1,19 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
-import Home from '../views/home/OldHome'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+// import Home from '../views/home/Home'
 
 
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/",
-    component: Home
+    path: '/',
+    component: () => import('@/views/home/Home'),
   }
 ];
 
 const router = new VueRouter({
-  mode: "history",
+  mode: 'history',
   base: process.env.BASE_URL,
   routes
 });

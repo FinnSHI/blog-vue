@@ -2,6 +2,10 @@
   <v-app id="app">
     <!-- 导航栏 -->
     <TopMenuBar />
+    <!-- 内容 -->
+    <v-content>
+      <router-view :key="$route.fullPath" />
+    </v-content>
     <!-- 侧边栏 -->
     <SideNavBar></SideNavBar>
     <!-- 页脚 -->

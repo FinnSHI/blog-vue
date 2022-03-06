@@ -34,12 +34,13 @@
         </div>
         <div class="menus-item">
           <router-link class="menu-btn" to="/">
-            <i class="iconfont iconzhuye" /> 文章
+            <i class="iconfont icon-xieboke" /> 文章
           </router-link>
         </div>
         <div class="menus-item">
           <a class="menu-btn">
-            <i class="iconfont iconfaxian" /> 发现
+<!--            <i class="iconfont iconfaxian" /> 发现-->
+            <i class="iconfont icon-xitongguanli" /> 发现
             <i class="iconfont iconxiangxia2 expand" />
           </a>
           <ul class="menus-submenu">
@@ -50,7 +51,7 @@
 <!--            </li>-->
             <li>
               <router-link to="/categories">
-                <i class="iconfont iconfenlei" /> 文章分类
+                <i class="iconfont icon-tuwenxiangqing" /> 文章分类
               </router-link>
             </li>
             <li>
@@ -62,27 +63,29 @@
         </div>
         <div class="menus-item">
           <a class="menu-btn">
-            <i class="iconfont iconqita" /> 娱乐
+<!--            <i class="iconfont iconqita" /> 空间-->
+            <i class="iconfont icon-QQkongjian" /> 空间
             <i class="iconfont iconxiangxia2 expand" />
           </a>
           <ul class="menus-submenu">
             <li>
               <router-link to="/albums">
-                <i class="iconfont iconxiangce1" /> 相册
+<!--                <i class="iconfont iconxiangce1" /> 相册-->
+                <i class="iconfont icon-xiangji" /> 我的相册
               </router-link>
             </li>
             <li>
               <router-link to="/talks">
-                <i class="iconfont iconpinglun" /> 说说
+                <i class="iconfont icon-xiaoxi" /> 随口说说
               </router-link>
             </li>
           </ul>
         </div>
-        <div class="menus-item">
-          <router-link to="/links">
-            <i class="iconfont iconlianjie" /> 友链
-          </router-link>
-        </div>
+<!--        <div class="menus-item">-->
+<!--          <router-link to="/links">-->
+<!--            <i class="iconfont iconlianjie" /> 友链-->
+<!--          </router-link>-->
+<!--        </div>-->
         <div class="menus-item">
           <router-link to="/about">
             <i class="iconfont iconzhifeiji" /> 关于
@@ -93,29 +96,29 @@
 <!--            <i class="iconfont iconpinglunzu" /> 留言-->
 <!--          </router-link>-->
 <!--        </div>-->
-        <div class="user-btn">
-          <a v-if="!this.$store.state.avatar" @click="openLogin">
-            <i class="iconfont icondenglu" /> 登录
-          </a>
-          <template v-else>
-            <img
-              class="user-avatar"
-              :src="this.$store.state.avatar"
-              height="30"
-              width="30"
-            />
-            <ul class="user-submenu">
-              <li>
-                <router-link to="/user">
-                  <i class="iconfont icongerenzhongxin" /> 个人中心
-                </router-link>
-              </li>
-              <li>
-                <a @click="logout"><i class="iconfont icontuichu" /> 退出</a>
-              </li>
-            </ul>
-          </template>
-        </div>
+<!--        <div class="user-btn">-->
+<!--          <a v-if="!this.$store.state.avatar" @click="openLogin">-->
+<!--            <i class="iconfont icondenglu" /> 登录-->
+<!--          </a>-->
+<!--          <template v-else>-->
+<!--            <img-->
+<!--              class="user-avatar"-->
+<!--              :src="this.$store.state.avatar"-->
+<!--              height="30"-->
+<!--              width="30"-->
+<!--            />-->
+<!--            <ul class="user-submenu">-->
+<!--              <li>-->
+<!--                <router-link to="/user">-->
+<!--                  <i class="iconfont icongerenzhongxin" /> 个人中心-->
+<!--                </router-link>-->
+<!--              </li>-->
+<!--              <li>-->
+<!--                <a @click="logout"><i class="iconfont icontuichu" /> 退出</a>-->
+<!--              </li>-->
+<!--            </ul>-->
+<!--          </template>-->
+<!--        </div>-->
       </div>
     </div>
   </v-app-bar>
@@ -133,6 +136,9 @@ export default {
     }
   },
   methods: {
+    isHome(){
+
+    },
     scroll() {
       const that = this;
       let scrollTop =
@@ -143,7 +149,8 @@ export default {
       if (that.scrollTop > 60) {
         that.navClass = "nav-fixed";
       } else {
-        that.navClass = "nav";
+        // that.navClass = "nav";
+        that.navClass = "nav-fixed";
       }
     },
     openSearch() {
@@ -152,23 +159,23 @@ export default {
     openDrawer() {
       this.$store.state.drawer = true;
     },
-    openLogin() {
-      this.$store.state.loginFlag = true;
-    },
-    logout() {
-      //如果在个人中心则跳回上一页
-      if (this.$route.path == "/user") {
-        this.$router.go(-1);
-      }
-      this.axios.get("/api/logout").then(({ data }) => {
-        if (data.flag) {
-          this.$store.commit("logout");
-          this.$toast({ type: "success", message: "注销成功" });
-        } else {
-          this.$toast({ type: "error", message: data.message });
-        }
-      });
-    }
+    // openLogin() {
+    //   this.$store.state.loginFlag = true;
+    // },
+    // logout() {
+    //   //如果在个人中心则跳回上一页
+    //   if (this.$route.path == "/user") {
+    //     this.$router.go(-1);
+    //   }
+    //   this.axios.get("/api/logout").then(({ data }) => {
+    //     if (data.flag) {
+    //       this.$store.commit("logout");
+    //       this.$toast({ type: "success", message: "注销成功" });
+    //     } else {
+    //       this.$toast({ type: "error", message: data.message });
+    //     }
+    //   });
+    // }
   },
   computed: {
     avatar() {

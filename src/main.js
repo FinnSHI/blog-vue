@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import './assets/css/index.css'
 import './assets/css/iconfont.css'
+import './assets/font/iconfont.css'
 import './assets/css/markdown.css'
 import dayjs from 'dayjs'
 import vuetify from './plugins/vuetify'
@@ -20,6 +21,7 @@ Vue.filter("year", function(value) {
   return dayjs(value).format("YYYY");
 });
 
+/* 全局前端守卫 */
 router.beforeEach((to, from, next) => {
   NProgress.start();
   if (to.meta.title) {
