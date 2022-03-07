@@ -1,9 +1,7 @@
 <template>
   <div>
-
-
     <!-- 标签或分类名 -->
-    <div class="banner" :style="cover">
+    <div class="home-banner" :style="cover">
       <h1 class="banner-title animated fadeInDown">{{ title }} - {{ name }}</h1>
     </div>
     <div class="article-list-wrapper">

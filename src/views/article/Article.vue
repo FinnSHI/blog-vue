@@ -32,32 +32,22 @@
                 {{ article.categoryName }}
               </router-link>
             </span>
-          </div>
-          <div class="second-line">
+            <span class="separator">|</span>
             <!-- 字数统计 -->
             <span>
-              <i class="iconfont iconzishu" />
+              <i class="iconfont icon-tianjia" />
               字数统计: {{ wordNum | num }}
             </span>
-            <span class="separator">|</span>
-            <!-- 阅读时长 -->
-            <span>
-              <i class="iconfont iconshijian" />
-              阅读时长: {{ readTime }}
-            </span>
           </div>
-          <div class="third-line">
-            <span class="separator">|</span>
-            <!-- 阅读量 -->
-            <span>
-              <i class="iconfont iconliulan" /> 阅读量: {{ article.viewsCount }}
-            </span>
-            <span class="separator">|</span>
-            <!-- 评论量 -->
-            <span>
-              <i class="iconfont iconpinglunzu1" />评论数: {{ commentCount }}
-            </span>
-          </div>
+
+
+<!--          <div class="third-line">-->
+<!--            <span class="separator">|</span>-->
+<!--            &lt;!&ndash; 阅读量 &ndash;&gt;-->
+<!--            <span>-->
+<!--              <i class="iconfont iconliulan" /> 阅读量: {{ article.viewsCount }}-->
+<!--            </span>-->
+<!--          </div>-->
         </div>
       </div>
     </div>
@@ -173,7 +163,7 @@
 </template>
 
 <script>
-// import clipboard from "clipboard";
+import Clipboard from "clipboard";
 // import Comment from "../../components/Comment";
 import tocbot from "tocbot";
 export default {
@@ -214,6 +204,124 @@ export default {
     };
   },
   methods: {
+    getArticle() {
+      const that = this;
+      let id = this.$route.path.split('/')[2];
+      //查询文章
+      this.axios.get("/api/article/showArticleContent?articleId=" + id).then(({ data }) => {
+        document.title = data.data.articleDetails.articleTitle;
+        //将markdown转换为Html
+        this.markdownToHtml(data.data.articleDetails);
+        this.$nextTick(() => {
+          // 统计文章字数
+          this.wordNum = this.deleteHTMLTag(this.article.articleContent).length;
+          // // 计算阅读时间
+          // this.readTime = Math.round(this.wordNum / 400) + "分钟";
+          // 添加代码复制功能
+          this.clipboard = new Clipboard(".copy-btn");
+          this.clipboard.on("success", () => {
+            this.$toast({ type: "success", message: "复制成功" });
+          });
+          // 添加文章生成目录功能
+          let nodes = this.$refs.article.children;
+          if (nodes.length) {
+            for (let i = 0; i < nodes.length; i++) {
+              let node = nodes[i];
+              let reg = /^H[1-4]{1}$/;
+              if (reg.exec(node.tagName)) {
+                node.id = i;
+              }
+            }
+          }
+          tocbot.init({
+            tocSelector: "#toc", //要把目录添加元素位置，支持选择器
+            contentSelector: ".article-content", //获取html的元素
+            headingSelector: "h1, h2, h3", //要显示的id的目录
+            hasInnerContainers: true,
+            onClick: function(e) {
+              e.preventDefault();
+            }
+          });
+          // 添加图片预览功能
+          const imgList = this.$refs.article.getElementsByTagName("img");
+          for (let i = 0; i < imgList.length; i++) {
+            this.imgList.push(imgList[i].src);
+            imgList[i].addEventListener("click", function(e) {
+              that.previewImg(e.target.currentSrc);
+            });
+          }
+        });
+      });
+    },
+    markdownToHtml(article) {
+      const MarkdownIt = require("markdown-it");
+      const hljs = require("highlight.js");
+      const md = new MarkdownIt({
+        html: true,
+        linkify: true,
+        typographer: true,
+        breaks: true,
+        highlight: function(str, lang) {
+          // 当前时间加随机数生成唯一的id标识
+          let d = new Date().getTime();
+          if (
+              window.performance &&
+              typeof window.performance.now === "function"
+          ) {
+            d += performance.now();
+          }
+          const codeIndex = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+              /[xy]/g,
+              function(c) {
+                let r = (d + Math.random() * 16) % 16 | 0;
+                d = Math.floor(d / 16);
+                return (c == "x" ? r : (r & 0x3) | 0x8).toString(16);
+              }
+          );
+          // 复制功能主要使用的是 clipboard.js
+          let html = `<button class="copy-btn iconfont iconfuzhi" type="button" data-clipboard-action="copy" data-clipboard-target="#copy${codeIndex}"></button>`;
+          const linesLength = str.split(/\n/).length - 1;
+          // 生成行号
+          let linesNum = '<span aria-hidden="true" class="line-numbers-rows">';
+          for (let index = 0; index < linesLength; index++) {
+            linesNum = linesNum + "<span></span>";
+          }
+          linesNum += "</span>";
+          if (lang == null) {
+            lang = "java";
+          }
+          if (lang && hljs.getLanguage(lang)) {
+            // highlight.js 高亮代码
+            const preCode = hljs.highlight(lang, str, true).value;
+            html = html + preCode;
+            if (linesLength) {
+              html += '<b class="name">' + lang + "</b>";
+            }
+            // 将代码包裹在 textarea 中，由于防止textarea渲染出现问题，这里将 "<" 用 "<" 代替，不影响复制功能
+            return `<pre class="hljs"><code>${html}</code>${linesNum}</pre><textarea style="position: absolute;top: -9999px;left: -9999px;z-index: -9999;" id="copy${codeIndex}">${str.replace(
+                /<\/textarea>/g,
+                "</textarea>"
+            )}</textarea>`;
+          }
+        }
+      });
+      // 将markdown替换为html标签
+      article.articleContent = md.render(article.articleContent);
+      this.article = article;
+      console.log(article);
+    },
+    previewImg(img) {
+      this.$imagePreview({
+        images: this.imgList,
+        index: this.imgList.indexOf(img)
+      });
+    },
+    deleteHTMLTag(content) {
+      return content
+          .replace(/<\/?[^>]*>/g, "")
+          .replace(/[|]*\n/, "")
+          .replace(/&npsp;/gi, "");
+    },
   },
   computed: {
     blogInfo() {

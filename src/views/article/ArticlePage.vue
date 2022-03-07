@@ -1,8 +1,17 @@
 <template>
   <div>
     <!-- banner -->
-    <div class="banner" :style="cover">
-      <h1 class="banner-title">- 我的文章 -</h1>
+    <div class="home-banner" :style="cover">
+      <div class="banner-container">
+        <!-- 联系方式 -->
+        <h1 class="blog-title animated zoomIn">
+          - 我的文章 -
+        </h1>
+        <!-- 打印 -->
+        <div class="blog-intro">
+          {{ obj.output }} <span class="typed-cursor">|</span>
+        </div>
+      </div>
     </div>
     <!-- 主页文章 -->
     <v-row class="home-container">
@@ -260,6 +269,17 @@ export default {
 </style>
 
 <style scoped>
+.home-banner {
+  position: absolute;
+  top: -60px;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  background-attachment: fixed;
+  text-align: center;
+  color: #fff !important;
+  animation: header-effect 1s;
+}
 .banner-container {
   margin-top: 43vh;
   line-height: 1.5;
@@ -299,7 +319,7 @@ export default {
   }
   .home-container {
     max-width: 1200px;
-    margin: calc(60vh - 48px) auto 28px auto;
+    margin: calc(100vh - 48px) auto 28px auto;
     padding: 0 5px;
   }
   .article-card {
