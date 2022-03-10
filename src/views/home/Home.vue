@@ -1,6 +1,5 @@
 <template>
   <div>
-    test
     <!-- banner -->
     <div class="home-banner" :style="cover">
       <div class="banner-container">

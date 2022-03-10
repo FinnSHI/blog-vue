@@ -146,11 +146,15 @@ export default {
           document.documentElement.scrollTop ||
           document.body.scrollTop;
       that.scrollTop = scrollTop;
-      if (that.scrollTop > 60) {
+
+      if(this.$route.path === '/') {
+        that.navClass = "nav-fixed";
+      }
+      else if (that.scrollTop > 60) {
         that.navClass = "nav-fixed";
       } else {
         // that.navClass = "nav";
-        that.navClass = "nav-fixed";
+        that.navClass = "nav";
       }
     },
     openSearch() {

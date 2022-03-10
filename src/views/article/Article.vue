@@ -36,7 +36,7 @@
             <!-- 字数统计 -->
             <span>
               <i class="iconfont icon-tianjia" />
-              字数统计: {{ wordNum | num }}
+              字数统计: {{ wordNum }}
             </span>
           </div>
 
@@ -47,7 +47,7 @@
 <!--            <span>-->
 <!--              <i class="iconfont iconliulan" /> 阅读量: {{ article.viewsCount }}-->
 <!--            </span>-->
-<!--          </div>-->
+<!--        </div>-->
         </div>
       </div>
     </div>
@@ -80,18 +80,18 @@
           <div class="pagination-post">
             <!-- 上一篇 -->
             <div
-              :class="isFull(article.lastArticle.id)"
-              v-if="article.lastArticle.id"
+              :class="isFull(article.preArticle.id)"
+              v-if="article.preArticle.id"
             >
-              <router-link :to="'/articles/' + article.lastArticle.id">
+              <router-link :to="'/articles/' + article.preArticle.id">
                 <img
                   class="post-cover"
-                  :src="article.lastArticle.articleCover"
+                  :src="article.preArticle.articleCover"
                 />
                 <div class="post-info">
                   <div class="label">上一篇</div>
                   <div class="post-title">
-                    {{ article.lastArticle.articleTitle }}
+                    {{ article.preArticle.articleTitle }}
                   </div>
                 </div>
               </router-link>
@@ -184,12 +184,22 @@ export default {
       },
       imgList: [],
       article: {
-        nextArticle: {
+        id: 0,
+        articleTitle: "",
+        articleContent: "",
+        categoryName: "",
+        createTime: "",
+        updateTime: "",
+        tagList: [],
+        viewsCount: 0,
+        preArticle: {
           id: 0,
+          articleTitle: "",
           articleCover: ""
         },
-        lastArticle: {
+        nextArticle: {
           id: 0,
+          articleTitle: "",
           articleCover: ""
         },
         recommendArticleList: [],
@@ -206,14 +216,14 @@ export default {
   methods: {
     getArticle() {
       const that = this;
-      let id = this.$route.path.split('/')[2];
+      let routerId = this.$route.path.split('/')[2];
       //查询文章
-      this.axios.get("/api/article/showArticleContent?articleId=" + id).then(({ data }) => {
+      this.axios.get("/api/article/getArticleById?articleId=" + routerId).then(({ data }) => {
         document.title = data.data.articleDetails.articleTitle;
         //将markdown转换为Html
         this.markdownToHtml(data.data.articleDetails);
         this.$nextTick(() => {
-          // 统计文章字数
+          // 文章字数
           this.wordNum = this.deleteHTMLTag(this.article.articleContent).length;
           // // 计算阅读时间
           // this.readTime = Math.round(this.wordNum / 400) + "分钟";
@@ -308,7 +318,6 @@ export default {
       // 将markdown替换为html标签
       article.articleContent = md.render(article.articleContent);
       this.article = article;
-      console.log(article);
     },
     previewImg(img) {
       this.$imagePreview({
@@ -322,6 +331,12 @@ export default {
           .replace(/[|]*\n/, "")
           .replace(/&npsp;/gi, "");
     },
+    isFull(id) {
+      if(id == null)
+        return "post";
+      else
+        return "post full";
+    }
   },
   computed: {
     blogInfo() {
@@ -472,7 +487,8 @@ export default {
   border: 1px solid #eee;
 }
 .aritcle-copyright span {
-  color: #49b1f5;
+  /*color: #49b1f5;*/
+  color: #000;
   font-weight: bold;
 }
 .aritcle-copyright a {
