@@ -74,7 +74,7 @@
               <a :href="articleHref" target="_blank">{{ articleHref }} </a>
             </div>
             <div>
-              <span>版权声明：</span>转载请注明文章出处。
+              <span>版权声明：</span>本文为博主「方人也几点」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
             </div>
           </div>
           <div class="pagination-post">
@@ -222,6 +222,7 @@ export default {
         document.title = data.data.articleDetails.articleTitle;
         //将markdown转换为Html
         this.markdownToHtml(data.data.articleDetails);
+        console.log(this.article.newestArticleList[1]);
         this.$nextTick(() => {
           // 文章字数
           this.wordNum = this.deleteHTMLTag(this.article.articleContent).length;

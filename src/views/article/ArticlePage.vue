@@ -124,8 +124,9 @@
             <div class="card-info-social">
               <a
                   v-if="isShowSocial('weibo')"
-                  class="mr-5 iconfont icon-weibo1"
                   target="_blank"
+                  :href="blogInfo.websiteConfig.weibo"
+                  class="mr-5 iconfont icon-weibo1"
               />
               <a
                   v-if="isShowSocial('github')"
@@ -151,23 +152,23 @@
               {{ blogInfo.websiteConfig.websiteNotice }}
             </div>
           </v-card>
-          <!-- 网站信息 -->
-          <v-card class="blog-card animated zoomIn mt-5">
-            <div class="web-info-title">
-              <v-icon size="18">icon-shijian</v-icon>
-              网站资讯
-            </div>
-            <div class="web-info">
-              <div style="padding:4px 0 0">
-                运行时间:<span class="float-right">{{ time }}</span>
-              </div>
-              <div style="padding:4px 0 0">
-                总访问量:<span class="float-right">
-                  {{ blogInfo.viewsCount }}
-                </span>
-              </div>
-            </div>
-          </v-card>
+<!--          &lt;!&ndash; 网站信息 &ndash;&gt;-->
+<!--          <v-card class="blog-card animated zoomIn mt-5">-->
+<!--            <div class="web-info-title">-->
+<!--              <v-icon size="18">icon-shijian</v-icon>-->
+<!--              网站资讯-->
+<!--            </div>-->
+<!--            <div class="web-info">-->
+<!--              <div style="padding:4px 0 0">-->
+<!--                运行时间:<span class="float-right">{{ time }}</span>-->
+<!--              </div>-->
+<!--              <div style="padding:4px 0 0">-->
+<!--                总访问量:<span class="float-right">-->
+<!--                  {{ blogInfo.viewsCount }}-->
+<!--                </span>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </v-card>-->
         </div>
       </v-col>
     </v-row>
